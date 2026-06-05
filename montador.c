@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 int main() {
     char instrucao[20];
@@ -7,8 +8,12 @@ int main() {
 
     while (1) {
 
-        printf("\nDigite uma instrucao: ");
-        scanf("%s", instrucao);
+        printf("Digite uma instrucao: ");
+        if (scanf("%19s", instrucao) != 1) break;
+
+        for (int i = 0; instrucao[i]; i++) {
+            instrucao[i] = toupper(instrucao[i]);
+        }
 
         if (strcmp(instrucao, "NOP") == 0) {
             printf("Byte gerado: 00\n");
