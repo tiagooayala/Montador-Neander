@@ -38,10 +38,13 @@ int usaOperando(char instrucao[])
 
 int main(int argc, char *argv[])
 {
-    FILE *arquivo;
+    FILE *entrada;
+    FILE *saida;
 
     char instrucao[20];
     int operando;
+
+    unsigned char byte;
 
     if(argc != 2)
     {
@@ -49,15 +52,34 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    arquivo = fopen(argv[1], "r");
+    entrada = fopen(argv[1], "r");
 
-    if(arquivo == NULL)
+    if(entrada == NULL)
     {
         printf("Erro ao abrir arquivo\n");
         return 1;
     }
 
-    while(fscanf(arquivo, "%s", instrucao) == 1)
+    saida = fopen("saida.mem", "wb");
+
+    if(saida == NULL)
+    {
+        printf("Erro ao criar arquivo\n");
+        fclose(entrada);
+        return 1;
+    }
+
+    unsigned char cabecalho[4] =
+    {
+        0x03,
+        0x4E,
+        0x44,
+        0x52
+    };
+
+    fwrite(cabecalho, 1, 4, saida);
+
+    while(fscanf(entrada, "%s", instrucao) == 1)
     {
         toUpperStr(instrucao);
 
@@ -65,23 +87,39 @@ int main(int argc, char *argv[])
 
         if(opcode == -1)
         {
-            printf("Instrucao invalida\n");
             continue;
         }
 
         if(usaOperando(instrucao))
         {
-            fscanf(arquivo, "%x", &operando);
+            fscanf(entrada, "%x", &operando);
 
-            printf("%02X %02X\n", opcode, operando);
+            byte = opcode;
+            fwrite(&byte, 1, 1, saida);
+
+            byte = 0x00;
+            fwrite(&byte, 1, 1, saida);
+
+            byte = operando;
+            fwrite(&byte, 1, 1, saida);
+
+            byte = 0x00;
+            fwrite(&byte, 1, 1, saida);
         }
         else
         {
-            printf("%02X\n", opcode);
+            byte = opcode;
+            fwrite(&byte, 1, 1, saida);
+
+            byte = 0x00;
+            fwrite(&byte, 1, 1, saida);
         }
     }
 
-    fclose(arquivo);
+    fclose(entrada);
+    fclose(saida);
+
+    printf("Arquivo saida.mem gerado com sucesso!\n");
 
     return 0;
 }
