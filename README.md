@@ -20,30 +20,29 @@ O arquivo gerado sempre inicia com o cabeçalho obrigatório:
 
 Tabela de instruções
 
-Assembly     Opcode
+Assembly Opcode
 
-NOP            00
+NOP 00
 
-STA            10
+STA 10
 
-LDA            20
+LDA 20
 
-ADD            30
+ADD 30
 
-OR             40
+OR 40
 
-AND            50
+AND 50
 
-NOT            60
+NOT 60
 
-JMP            80
+JMP 80
 
-JN             90
+JN 90
 
-JZ             A0
+JZ A0
 
-HLT            F0
-
+HLT F0
 
 Formato de saída
 
@@ -59,13 +58,18 @@ Para instruções sem operando (NOP, NOT e HLT), o montador grava apenas:
 
 [opcode] 00
 
-Compilação
+Como rodar o programa:
+
+Abra a pasta do projeto com o arquivo do montador e o arquivo .asm no terminal:
+No terminal: cd <nome da pasta>
 
 Compile o programa com o GCC:
 
-Uso
+No terminal: gcc montador.c -o montador.out
 
-Execute o montador passando o arquivo Assembly como argumento:
+Passe o arquivo Assembly como argumento:
+
+No terminal: ./montador.out <nome do arquivo .asm>
 
 O arquivo de saída será gerado como:
 
