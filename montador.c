@@ -1,3 +1,5 @@
+// Integrantes do grupo: Tiago Oliveira Ayala e Wictor Morais Gonçalves
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
